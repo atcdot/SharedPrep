@@ -6,6 +6,17 @@ services:
       PORT: "8080"
       TELEGRAM_CLIENT_ID: ${TELEGRAM_CLIENT_ID}
       JWT_SECRET: ${JWT_SECRET}
-    ports:
-      - "8080:8080"
     restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.sharedprep.rule=Host(`${HOST:-sharedprep.example.com}`)"
+      - "traefik.http.routers.sharedprep.entryPoints=websecure"
+      - "traefik.http.routers.sharedprep.tls=true"
+      - "traefik.http.routers.sharedprep.tls.certResolver=letsencrypt"
+      - "traefik.http.services.sharedprep.loadbalancer.server.port=8080"
+    networks:
+      - dokploy-network
+
+networks:
+  dokploy-network:
+    external: true
