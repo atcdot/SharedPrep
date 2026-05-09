@@ -1,0 +1,11 @@
+services:
+  api:
+    image: ghcr.io/${GITHUB_REPO:-atcdot/sharedprep}:latest
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      PORT: "8080"
+      TELEGRAM_CLIENT_ID: ${TELEGRAM_CLIENT_ID}
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "8080:8080"
+    restart: unless-stopped

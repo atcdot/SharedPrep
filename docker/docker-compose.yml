@@ -1,0 +1,51 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_DB: sharedprep
+      POSTGRES_USER: sharedprep
+      POSTGRES_PASSWORD: sharedprep
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U sharedprep"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  api:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    environment:
+      DATABASE_URL: postgres://sharedprep:sharedprep@db:5432/sharedprep?sslmode=disable
+      PORT: "8080"
+      TELEGRAM_CLIENT_ID: ${TELEGRAM_CLIENT_ID}
+      JWT_SECRET: ${JWT_SECRET}
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  web:
+    build:
+      context: ../web
+      dockerfile: ../docker/Dockerfile.web
+    environment:
+      VITE_TELEGRAM_CLIENT_ID: ${VITE_TELEGRAM_CLIENT_ID}
+      VITE_API_URL: http://api:8080
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api
+    develop:
+      watch:
+        - action: sync
+          path: ../web/src
+          target: /app/src
+
+volumes:
+  pgdata:

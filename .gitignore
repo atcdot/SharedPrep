@@ -1,0 +1,29 @@
+# Binaries
+bin/
+*.exe
+
+# Dependencies
+web/node_modules/
+
+# Build output
+web/dist/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude
+.claude/plans/
+/.claude/settings.local.json
+/.claude/

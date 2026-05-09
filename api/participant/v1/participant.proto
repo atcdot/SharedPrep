@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package participant.v1;
+
+message Participant {
+  string id = 1;
+  string event_id = 2;
+  bool is_author = 3;
+  string created_at = 4;
+  optional string display_name = 5;
+  optional string telegram_username = 6;
+}
+
+message JoinEventRequest {
+  string share_code = 1;
+}
+
+message JoinEventResponse {
+  Participant participant = 1;
+}
+
+message ListParticipantsRequest {
+  string event_id = 1;
+}
+
+message ListParticipantsResponse {
+  repeated Participant participants = 1;
+}
+
+service ParticipantService {
+  rpc JoinEvent(JoinEventRequest) returns (JoinEventResponse);
+  rpc ListParticipants(ListParticipantsRequest) returns (ListParticipantsResponse);
+}

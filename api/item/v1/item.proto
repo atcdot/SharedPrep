@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package item.v1;
+
+message Item {
+  string id = 1;
+  string event_id = 2;
+  string creator_id = 3;
+  string creator_name = 4;
+  string title = 5;
+  int32 quantity = 6;
+  optional string assigned_participant_id = 7;
+  optional string assigned_participant_name = 8;
+  string created_at = 9;
+}
+
+message CreateItemRequest {
+  string event_id = 1;
+  string title = 2;
+  int32 quantity = 3;
+}
+
+message CreateItemResponse {
+  Item item = 1;
+}
+
+message UpdateItemRequest {
+  string item_id = 1;
+  string title = 2;
+  int32 quantity = 3;
+}
+
+message UpdateItemResponse {
+  Item item = 1;
+}
+
+message DeleteItemRequest {
+  string item_id = 1;
+}
+
+message DeleteItemResponse {}
+
+message ClaimItemRequest {
+  string item_id = 1;
+}
+
+message ClaimItemResponse {
+  Item item = 1;
+}
+
+message UnclaimItemRequest {
+  string item_id = 1;
+}
+
+message UnclaimItemResponse {
+  Item item = 1;
+}
+
+message AssignItemRequest {
+  string item_id = 1;
+  string participant_id = 2;
+}
+
+message AssignItemResponse {
+  Item item = 1;
+}
+
+message ListItemsRequest {
+  string event_id = 1;
+}
+
+message ListItemsResponse {
+  repeated Item items = 1;
+}
+
+service ItemService {
+  rpc CreateItem(CreateItemRequest) returns (CreateItemResponse);
+  rpc UpdateItem(UpdateItemRequest) returns (UpdateItemResponse);
+  rpc DeleteItem(DeleteItemRequest) returns (DeleteItemResponse);
+  rpc ClaimItem(ClaimItemRequest) returns (ClaimItemResponse);
+  rpc UnclaimItem(UnclaimItemRequest) returns (UnclaimItemResponse);
+  rpc AssignItem(AssignItemRequest) returns (AssignItemResponse);
+  rpc ListItems(ListItemsRequest) returns (ListItemsResponse);
+}

@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package event.v1;
+
+message Event {
+  string id = 1;
+  string share_code = 2;
+  string title = 3;
+  optional string description = 4;
+  optional string date = 5;
+  string author_name = 6;
+  string created_at = 7;
+  optional string link = 8;
+}
+
+message CreateEventRequest {
+  string title = 1;
+  optional string description = 2;
+  optional string date = 3;
+  optional string link = 4;
+}
+
+message CreateEventResponse {
+  Event event = 1;
+}
+
+message GetEventRequest {
+  string share_code = 1;
+}
+
+message GetEventResponse {
+  Event event = 1;
+  string my_participant_id = 2;
+}
+
+message UpdateEventRequest {
+  string event_id = 1;
+  string title = 2;
+  optional string description = 3;
+  optional string date = 4;
+  optional string link = 5;
+}
+
+message UpdateEventResponse {
+  Event event = 1;
+}
+
+message DeleteEventRequest {
+  string event_id = 1;
+}
+
+message DeleteEventResponse {}
+
+message ListMyEventsRequest {}
+
+message ListMyEventsResponse {
+  repeated Event events = 1;
+}
+
+service EventService {
+  rpc CreateEvent(CreateEventRequest) returns (CreateEventResponse);
+  rpc GetEvent(GetEventRequest) returns (GetEventResponse);
+  rpc UpdateEvent(UpdateEventRequest) returns (UpdateEventResponse);
+  rpc DeleteEvent(DeleteEventRequest) returns (DeleteEventResponse);
+  rpc ListMyEvents(ListMyEventsRequest) returns (ListMyEventsResponse);
+}
